@@ -5,7 +5,7 @@ require('dotenv').config();
 
 //export configuration settings
 module.exports = {
-    PORT: process.env.PORT,
+    PORT: process.env.PORT || 3000,
     //database settings
     db: {
         DB_NAME: process.env.DB_NAME,
