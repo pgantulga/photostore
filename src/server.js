@@ -3,6 +3,8 @@ const express = require('express');
 
 //require config file
 const config = require('./config/config');
+//require and configure dotenv package
+require('dotenv').config();
 
 //initialize express app
 const app = express();
