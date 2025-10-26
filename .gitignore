@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# PM2 process files
+pids/
+*.pid
+*.seed
+

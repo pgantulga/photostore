@@ -72,15 +72,62 @@ const Customer = sequelize.define('Customer', {
     }
 })
 
+//staff model
+
+const Staff = sequelize.define('Staff', {
+    staffId: {  
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    role: {
+        type: DataTypes.STRING,
+        defaultValue: 'staff'
+    }
+})
+//Order model
+const Order = sequelize.define('Order', {
+    orderId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    custId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Customer,
+            key: 'custId'
+        }
+    },
+    status: {
+        type: DataTypes.STRING,
+        defaultValue: 'pending'
+    },
+    total: {
+        type: DataTypes.DECIMAL(10, 2),
+    }
+})
+
 Customer.prototype.signToken = function(payload) {
-    console.log("Generating JWT for");
     const token = jwt.sign(payload, config.auth.jwtSecret, { expiresIn: '7d', algorithm: 'HS512' });
     console.log("Generated token:", token);
     return token;
 };
 
 Customer.prototype.hashPassword = async function(password) {
-    console.log("Hashing password");
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;

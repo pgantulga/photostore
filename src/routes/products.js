@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
     try {
         const products = await Product.findAll();
         res.status(200).send(products);
-    
+
     } catch (error) {
         console.error(error);
         res.status(500).send(error.message);
@@ -49,9 +49,25 @@ router.get('/:id', async (req, res) => {
 router.post('/', [auth, staff], async (req, res) => {
     console.log("POST /api/v1/products");
     console.log(req.body);
+    const productSchema = Joi.object({
+        name: Joi.string()
+            .regex(/^[a-zA-Z\s]*$/)
+            .min(3)
+            .max(30)
+            .required(),
+        desc: Joi.string()
+            .regex(/^[a-zA-Z0-9\s]*$/)
+            .min(10)
+            .max(255),
+        image: Joi.string().uri().allow(null),
+        price: Joi.number().positive().precision(2),
+        stock: Joi.number().integer().positive().allow(null)
+    });
+
     try {
-        const product = await Product.create(req.body);
-        res.status(201).send(product);
+        const value = await productSchema.validateAsync(req.body);
+        const product = await Product.create(value);
+        return res.status(201).send(product);
     } catch (error) {
         console.error(error);
         res.status(500).send(error.message);
