@@ -13,7 +13,7 @@ module.exports = {
         DB_PASS: process.env.DB_PASS,
         options: {
             host: process.env.HOST || 'localhost',
-            dialect: process.env.DIALECT || 'mysql2',
+            dialect: process.env.DIALECT || 'mysql',
             // storage: './data/photostoreDB.sqlite'
             port: process.env.DB_PORT || 3306
         }
