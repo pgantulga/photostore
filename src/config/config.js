@@ -5,7 +5,7 @@ require('dotenv').config();
 
 //export configuration settings
 module.exports = {
-    PORT: process.env.PORT || 3002,
+    PORT: process.env.PORT,
     //database settings
     db: {
         DB_NAME: process.env.DB_NAME,
@@ -13,8 +13,9 @@ module.exports = {
         DB_PASS: process.env.DB_PASS,
         options: {
             host: process.env.HOST || 'localhost',
-            dialect: process.env.DIALECT || 'sqlite',
-            storage: './data/photostoreDB.sqlite'
+            dialect: process.env.DIALECT || 'mysql2',
+            // storage: './data/photostoreDB.sqlite'
+            port: process.env.DB_PORT || 3306
         }
     },
     //authentication settings
@@ -23,3 +24,26 @@ module.exports = {
     }
 
 }
+
+
+// config/secrets.js
+// db/mysql.js
+// import mysql from "mysql2/promise";
+// import { getSecrets } from "../config/secrets.js";
+
+// let connection;
+
+// export async function initDB() {
+//   const secrets = await getSecrets();
+
+//   connection = await mysql.createConnection({
+//     host: secrets.host,
+//     user: secrets.username,
+//     password: secrets.password,
+//     database: secrets.database,
+//     port: secrets.port,
+//   });
+
+//   console.log("✅ MySQL connected");
+//   return connection;
+// }
