@@ -31,7 +31,7 @@ app.use('/api/v1/orders', orderRoutes);
 app.use(morgan('combined', { stream: morganStream }));
 
 //start the server
-
+console.log('Connecting to DB at:', db.options.host);
 db.sequelize.authenticate()
   .then(() => {
     logger.info('✅ Connected to Amazon RDS via Sequelize');
