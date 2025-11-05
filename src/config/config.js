@@ -12,10 +12,11 @@ module.exports = {
         DB_USER: process.env.DB_USER,
         DB_PASS: process.env.DB_PASS,
         options: {
-            host: process.env.DB_HOST || 'localhost',
+            host: process.env.DB_HOST,
             dialect: process.env.DIALECT || 'mysql',
             // storage: './data/photostoreDB.sqlite'
-            port: process.env.DB_PORT || 3306
+            port: process.env.DB_PORT || 3306,
+            logging: false
         }
     },
     //authentication settings
