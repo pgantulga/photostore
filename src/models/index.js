@@ -10,13 +10,22 @@ const bcrypt = require('bcrypt');
 let db = {};
 
 //creating new sequelize instance and passing in configuration settings
+console.log('🔍 Sequelize connecting to:', {
+  host: config.db.options.host,
+  port: config.db.options.port,
+  user: config.db.DB_USER,
+  db: config.db.DB_NAME,
+  dialect: config.db.options.dialect
+});
+
+
 const sequelize = new Sequelize(
     config.db.DB_NAME,
     config.db.DB_USER,
     config.db.DB_PASS,
     config.db.options
 );
-
+console.log('Connecting to DB at:', config.db.options.host);
 // Product model
 
 const Product = sequelize.define('Product', {
@@ -121,9 +130,10 @@ const Order = sequelize.define('Order', {
     }
 })
 
+
+
 Customer.prototype.signToken = function(payload) {
     const token = jwt.sign(payload, config.auth.jwtSecret, { expiresIn: '7d', algorithm: 'HS512' });
-    console.log("Generated token:", token);
     return token;
 };
 
@@ -131,7 +141,16 @@ Customer.prototype.hashPassword = async function(password) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;
-}   
+}  
+
+//database associations
+
+Customer.hasMany(Order, { foreignKey: 'custId' });
+Order.belongsTo(Customer, { foreignKey: 'custId' });
+Product.hasMany(Order, { foreignKey: 'prodId' });
+Order.belongsTo(Product, { foreignKey: 'prodId' });
+
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
